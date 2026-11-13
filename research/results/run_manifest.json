@@ -1,0 +1,118 @@
+{
+  "python": "3.12.7 | packaged by Anaconda, Inc. | (main, Oct  4 2024, 13:17:27) [MSC v.1929 64 bit (AMD64)]",
+  "platform": "win32",
+  "versions": {
+    "numpy": "1.26.4",
+    "torch": "2.14.1+cu126",
+    "sentence-transformers": "6.1.0",
+    "transformers": "4.51.3",
+    "hnswlib": "0.8.0",
+    "scikit-learn": "1.5.1",
+    "statsmodels": "0.14.2",
+    "scipy": "1.13.1"
+  },
+  "repository": "https://github.com/vcache-project/vCache",
+  "commit": "50694eebf0c870231030f73707cb6543d47f0411",
+  "seed": 42,
+  "orders": [
+    "source",
+    "shuffle42"
+  ],
+  "static_thresholds": [
+    0.8,
+    0.85,
+    0.9,
+    0.95,
+    0.98,
+    0.99
+  ],
+  "verified_deltas": [
+    0.01,
+    0.05,
+    0.1
+  ],
+  "cache_capacity": "unbounded for this trace (N+10)",
+  "workload_filter": "Only rows with every oracle dimension present, for all strategies; UltraFeedback excludes 83/2000 rows.",
+  "oracle_comparison": "StringComparisonSimilarityEvaluator on canonical numeric JSON, equivalent to full label-vector equality; no null present",
+  "feedback_timing": "serialized immediate feedback; future.result then bounded callback drain after every request",
+  "labels": "public dataset oracle, not new live judge outputs",
+  "embedding": {
+    "model": "BAAI/bge-small-en-v1.5",
+    "revision": "5c38ec7c405ec4b44b94cc5a9bb96e735b38267a",
+    "chunk_tokens": 480,
+    "dimension": 384,
+    "device": "cuda",
+    "method": "Normalize each CLS chunk embedding, token-count-weighted mean, normalize. No truncation; no instruction prefix.",
+    "datasets": {
+      "pku": {
+        "requests": 2000,
+        "trace_sha256": "b86b3a5090b491e6183c34e65d3f1a65aa2d93fbbd0f016b1aa3cde99c8a75f3",
+        "full_chunks": 2091,
+        "question_chunks": 2000,
+        "tokens_min": 94,
+        "tokens_median": 313.5,
+        "tokens_p95": 467.0,
+        "tokens_max": 1542,
+        "requests_over_510_tokens": 51,
+        "elapsed_seconds": 16.671632600016892,
+        "embedding_sha256": "8e5e77ceda6c86ea6dc52548a0be21953c0b70b15ffb4d40b808c298f936b78b"
+      },
+      "helpsteer2": {
+        "requests": 2000,
+        "trace_sha256": "7469f20d0b293a2d90a2f869fe3c1f93cd5dd8338315ba1d11b463c8b2edcb8b",
+        "full_chunks": 3451,
+        "question_chunks": 2198,
+        "tokens_min": 99,
+        "tokens_median": 521.0,
+        "tokens_p95": 1188.0,
+        "tokens_max": 2965,
+        "requests_over_510_tokens": 1034,
+        "elapsed_seconds": 37.07493190001696,
+        "embedding_sha256": "96dc89b0092dd6693d7ca2c2a78cf10e9fee7586344e255fbf6137d8416275dd"
+      },
+      "ultrafeedback": {
+        "requests": 2000,
+        "trace_sha256": "2619aeeec160c4ad3875982fabe1e01a3b2b4da3c2c0b1fb1b7e3052a11eafe3",
+        "full_chunks": 3405,
+        "question_chunks": 2200,
+        "tokens_min": 139,
+        "tokens_median": 519.5,
+        "tokens_p95": 1188.05,
+        "tokens_max": 2607,
+        "requests_over_510_tokens": 1022,
+        "elapsed_seconds": 40.21126709971577,
+        "embedding_sha256": "b7e2e4f95d5da2c6b27001f4299446f6dcc92c107ceebd09163fefd9078eb81f"
+      }
+    }
+  },
+  "trace_manifest_sha256": "e62f86622dff5f8651af8e4d02bd52db015928b50cc8be92174bcd573e8fce1b",
+  "run_signature": "08b118c187c2391462507fcc0d0d4e6959dc8f725d1e5a6e18e031915af0dad0",
+  "code_signatures": {
+    "runner_sha256": "756ae41adcb2d3087423d975dcf4c3dfc8c2cd6309716a533e7224309d7a70be",
+    "prepare_script_sha256": "b66553720c8e8ab2fbb37a36b5927e21cc11e2eb806f49ea1c6ead1a33d1c90d",
+    "compat_patch_sha256": "cc9a27a09ff9ab00dc436f7b345702205b22c9e32c5d655566399cccf566e7fb",
+    "vcache_commit": "50694eebf0c870231030f73707cb6543d47f0411",
+    "vcache_diff_sha256": "cc9a27a09ff9ab00dc436f7b345702205b22c9e32c5d655566399cccf566e7fb",
+    "trace_metadata_sha256": "e62f86622dff5f8651af8e4d02bd52db015928b50cc8be92174bcd573e8fce1b",
+    "embedding_manifest_sha256": "65cee773b0c60b9b71a123fc73e8dec64fca6956a5fb1110bd79c06088551d4e",
+    "static_thresholds": [
+      0.8,
+      0.85,
+      0.9,
+      0.95,
+      0.98,
+      0.99
+    ],
+    "verified_deltas": [
+      0.01,
+      0.05,
+      0.1
+    ],
+    "orders": [
+      "source",
+      "shuffle42"
+    ],
+    "seed": 42,
+    "workload_filter": "exclude incomplete oracle rows for every policy"
+  }
+}

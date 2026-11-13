@@ -1,0 +1,46 @@
+# Local Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Local datasets, model weights, embeddings and checkpoints
+work/
+outputs/
+work/data/
+work/data_prefix/
+work/mvr_eval_data/
+work/mvr_training_data/
+work/models/
+work/embeddings/
+work/mvr_checkpoints/
+work/mvr_smoke_ckpt/
+work/mvr_target/
+work/mvr_hnsw_target/
+work/mvr_pkg_metadata/
+
+# Generated large replay traces and local logs
+research/results/*_trace.json
+research/results/*_full.json
+research/results/*_gated.json
+research/results/*.jsonl
+*.log
+*.tmp
+
+# Keep small, reviewable research artifacts
+!research/results/*.md
+!research/results/*.csv
+!research/results/*.png
+!research/results/*.svg
+!research/results/*_summary.json
+!research/results/environment_snapshot.json
+!research/results/requirements-observed.txt
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

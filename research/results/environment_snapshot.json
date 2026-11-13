@@ -1,0 +1,23 @@
+{
+  "observed_versions": {
+    "requests": "2.34.2",
+    "numpy": "1.26.4",
+    "torch": "2.14.1+cu126",
+    "sentence-transformers": "6.1.0",
+    "transformers": "4.51.3",
+    "hnswlib": "0.8.0",
+    "scikit-learn": "1.5.1",
+    "statsmodels": "0.14.2",
+    "scipy": "1.13.1",
+    "matplotlib": "3.9.2",
+    "openai": "2.46.0",
+    "faiss-cpu": "1.15.1",
+    "psutil": "5.9.0",
+    "typing-extensions": "4.16.0"
+  },
+  "gpu": "NVIDIA GeForce RTX 4060 Laptop GPU",
+  "gpu_memory_mib": 8188,
+  "driver_version": "566.26",
+  "model_weights_sha256": "3c9f31665447c8911517620762200d2245a2518d6e7208acc78cd9db317e21ad",
+  "dependency_caveat": "Observed installed environment, not the upstream locked/supported dependency set. vCache imported from work/vCache via sys.path; Windows optional-import compatibility patch applied."
+}

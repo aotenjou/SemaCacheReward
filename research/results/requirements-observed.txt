@@ -1,0 +1,14 @@
+requests==2.34.2
+numpy==1.26.4
+torch==2.14.1+cu126
+sentence-transformers==6.1.0
+transformers==4.51.3
+hnswlib==0.8.0
+scikit-learn==1.5.1
+statsmodels==0.14.2
+scipy==1.13.1
+matplotlib==3.9.2
+openai==2.46.0
+faiss-cpu==1.15.1
+psutil==5.9.0
+typing-extensions==4.16.0

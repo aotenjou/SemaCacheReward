@@ -1,0 +1,138 @@
+diff --git a/vcache/inference_engine/strategies/lang_chain.py b/vcache/inference_engine/strategies/lang_chain.py
+index f2672bc..6395580 100644
+--- a/vcache/inference_engine/strategies/lang_chain.py
++++ b/vcache/inference_engine/strategies/lang_chain.py
+@@ -1,5 +1,3 @@
+-from langchain.schema import HumanMessage, SystemMessage
+-
+ from vcache.inference_engine.inference_engine import InferenceEngine
+ 
+ 
+@@ -28,6 +26,10 @@ class LangChainInferenceEngine(InferenceEngine):
+         self.temperature = temperature
+ 
+         try:
++            from langchain.schema import HumanMessage, SystemMessage
++
++            self._human_message = HumanMessage
++            self._system_message = SystemMessage
+             if provider == "openai":
+                 from langchain_openai import ChatOpenAI
+ 
+@@ -83,8 +85,8 @@ class LangChainInferenceEngine(InferenceEngine):
+         try:
+             messages = []
+             if system_prompt:
+-                messages.append(SystemMessage(content=system_prompt))
+-            messages.append(HumanMessage(content=prompt))
++                messages.append(self._system_message(content=system_prompt))
++            messages.append(self._human_message(content=prompt))
+ 
+             response = self.chat_model(messages)
+             return response.content
+diff --git a/vcache/inference_engine/strategies/vllm.py b/vcache/inference_engine/strategies/vllm.py
+index 80f5bc7..cc6eefd 100644
+--- a/vcache/inference_engine/strategies/vllm.py
++++ b/vcache/inference_engine/strategies/vllm.py
+@@ -3,7 +3,13 @@ import os
+ from typing import Any, Dict, List, Optional
+ 
+ import torch
+-from vllm import LLM, RequestOutput, SamplingParams
++
++try:
++    from vllm import LLM, RequestOutput, SamplingParams
++except ImportError:  # vLLM is optional for offline/benchmark-only use.
++    LLM = None
++    RequestOutput = Any
++    SamplingParams = Any
+ 
+ from vcache.inference_engine.inference_engine import InferenceEngine
+ 
+@@ -54,6 +60,11 @@ class VLLMInferenceEngine(InferenceEngine):
+             enforce_eager: Disable CUDA graphs for debugging (uses more memory)
+         """
+         super().__init__()
++        if LLM is None:
++            raise ImportError(
++                "vllm is required for VLLMInferenceEngine; install it or use "
++                "BenchmarkInferenceEngine for offline benchmarks."
++            )
+ 
+         # Store configuration with proper typing
+         self.model_name: str = model_name
+@@ -108,6 +119,11 @@ class VLLMInferenceEngine(InferenceEngine):
+ 
+     def _initialize_engine(self) -> None:
+         """Initialize the vLLM LLM engine with configured parameters."""
++        if LLM is None:
++            raise ImportError(
++                "vllm is required for VLLMInferenceEngine; install it or use "
++                "BenchmarkInferenceEngine for offline benchmarks."
++            )
+         logger.info(f"Initializing vLLM engine with model: {self.model_name}")
+ 
+         llm_kwargs: Dict[str, Any] = {
+diff --git a/vcache/vcache_core/cache/embedding_engine/strategies/lang_chain.py b/vcache/vcache_core/cache/embedding_engine/strategies/lang_chain.py
+index c91f4a9..a37f969 100644
+--- a/vcache/vcache_core/cache/embedding_engine/strategies/lang_chain.py
++++ b/vcache/vcache_core/cache/embedding_engine/strategies/lang_chain.py
+@@ -1,7 +1,5 @@
+ from typing import List
+ 
+-from langchain_community.embeddings import HuggingFaceEmbeddings
+-
+ from vcache.vcache_core.cache.embedding_engine.embedding_engine import EmbeddingEngine
+ 
+ 
+@@ -17,6 +15,13 @@ class LangChainEmbeddingEngine(EmbeddingEngine):
+         Args:
+             model_name: Name of the HuggingFace model to use for embeddings.
+         """
++        try:
++            from langchain_community.embeddings import HuggingFaceEmbeddings
++        except ImportError as exc:
++            raise ImportError(
++                "langchain-community is required for LangChainEmbeddingEngine; "
++                "install it or use BenchmarkEmbeddingEngine for offline benchmarks."
++            ) from exc
+         self.model_name = model_name
+         self.embeddings = HuggingFaceEmbeddings(model_name=model_name)
+ 
+diff --git a/vcache/vcache_core/cache/embedding_store/vector_db/strategies/chroma.py b/vcache/vcache_core/cache/embedding_store/vector_db/strategies/chroma.py
+index c352aed..543a75f 100644
+--- a/vcache/vcache_core/cache/embedding_store/vector_db/strategies/chroma.py
++++ b/vcache/vcache_core/cache/embedding_store/vector_db/strategies/chroma.py
+@@ -1,8 +1,6 @@
+ from typing import List
+ from uuid import uuid4
+ 
+-import chromadb
+-
+ from vcache.vcache_core.cache.embedding_store.vector_db.vector_db import (
+     SimilarityMetricType,
+     VectorDB,
+@@ -23,6 +21,14 @@ class ChromaVectorDB(VectorDB):
+             similarity_metric_type (SimilarityMetricType): The similarity metric
+                 to use for comparisons.
+         """
++        try:
++            import chromadb
++        except ImportError as exc:
++            raise ImportError(
++                "chromadb is required for ChromaVectorDB; install it or use "
++                "HNSWLibVectorDB for offline benchmarks."
++            ) from exc
++        self._chromadb = chromadb
+         self.__next_embedding_id = 0
+         self.collection = None
+         self.client = None
+@@ -110,7 +116,7 @@ class ChromaVectorDB(VectorDB):
+         Raises:
+             ValueError: If the similarity metric type is invalid.
+         """
+-        self.client = chromadb.Client()
++        self.client = self._chromadb.Client()
+         collection_name: str = f"vcache_collection_{uuid4().hex}"
+         metric_type = self.similarity_metric_type.value
+         match metric_type:
